@@ -28,6 +28,7 @@ Install project dependencies with yarn
 ```
 yarn
 ```
+
 Run the project
 
 ```
@@ -40,6 +41,6 @@ Open the link in your browser
 http://localhost:3000
 ```
 
-## 📄 Licença
+## 📄 License
 
-Este projeto está sob a licença (sua licença) - veja o arquivo [LICENSE.md](https://github.com/jhonataspaulo/tictactoe/blob/main/LICENSE) para detalhes.
+This project is under license (MIT) - see the file [LICENSE.md](https://github.com/jhonataspaulo/tictactoe/blob/main/LICENSE) for details.
