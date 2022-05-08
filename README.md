@@ -1,6 +1,6 @@
 # Tic Tac Toe
 
-### 🔧 Instalação
+### 🔧 Installation
 
 .
 .
