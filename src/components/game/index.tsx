@@ -96,7 +96,26 @@ function Game() {
     });
 
     if (arrDocs.length == 0) {
-      setTimeout(() => setWinner('EMPATE'), 250);
+      let w = '';
+      for (let i = 0; i < 2; i++) {
+        for (let arr of [diagonals[i]]) {
+          let matchx = xid?.filter(x => arr.includes(x));
+          let matcho = oid?.filter(x => arr.includes(x));
+          if (matchx?.length == 3) {
+            w = 'X';
+            setTimeout(() => setWinner('X'), 250);
+          }
+          if (matcho?.length == 3) {
+            w = 'O';
+            setTimeout(() => setWinner('O'), 250);
+          }
+        }
+      }
+      if (w == '') {
+        setTimeout(() => setWinner('EMPATE'), 250);
+      } else {
+        setTimeout(() => setWinner(w), 250);
+      }
     }
   }, [current]);
 
