@@ -34,6 +34,12 @@ Run the project
 yarn dev
 ```
 
+Open the link in your browser
+
+```
+http://localhost:3000
+```
+
 ## 📄 Licença
 
 Este projeto está sob a licença (sua licença) - veja o arquivo [LICENSE.md](https://github.com/jhonataspaulo/tictactoe/blob/main/LICENSE) para detalhes.
