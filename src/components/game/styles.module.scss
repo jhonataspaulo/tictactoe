@@ -1,0 +1,76 @@
+.container{
+  width: 450px;
+  height: 450px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+
+  .boxItem {
+    border: none;
+    cursor: pointer;
+    color: white;
+    font-size: 80px;
+    font-weight: bold;
+
+    &:nth-child(1), 
+    &:nth-child(2), 
+    &:nth-child(4), 
+    &:nth-child(5), 
+    &:nth-child(7), 
+    &:nth-child(8) {
+      border-right: 2px solid lightseagreen;
+    }
+
+    &:nth-child(1),  
+    &:nth-child(2),  
+    &:nth-child(3),  
+    &:nth-child(4),  
+    &:nth-child(5),  
+    &:nth-child(6){
+      border-bottom: 2px solid lightseagreen;
+    } 
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+@media (max-width: 450px) {
+  .container {
+    width: calc(100vw - 40px);
+    height: 350px
+  }
+}
+
+.containerWinner{
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+
+  .winner {
+    font-size: 50px;
+    font-weight: bold;
+  }
+
+  .inforWinner {
+    font-size: 35px;
+    font-weight: bold;
+  }
+
+  .winnerLabel {
+    color: lightblue;
+    font-size: 40px;
+    font-weight: bold;
+  }
+
+  .button {
+    padding: 15px 25px;
+    border: none;
+    background-color: lightblue;
+    border-radius: 20px;
+    font-size: 15px;
+    color: rgb(1, 1, 26);
+    cursor: pointer;
+  }
+  
+}
