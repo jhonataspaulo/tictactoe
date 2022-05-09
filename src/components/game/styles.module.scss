@@ -1,17 +1,88 @@
-.container{
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 450px;
-  height: 450px;
+  
+  .players {
+    margin: 20px 0;
+    display: flex;
+    align-items: center;
+    gap: 40px;
+
+  }
+
+  .player {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &:first-child span:first-child,
+    &:last-child span:first-child
+    {
+      font-size: 12px;
+      color: lightblue;
+      margin-bottom: 5px;
+    }
+
+    p {
+      font-size: 40px;
+      font-weight: bold;
+    }
+  }
+
+  .btnReset {
+    border: none;
+    background-color: lightblue;
+    padding: 10px 20px;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    color: rgb(13, 34, 41);
+
+    &:hover{
+      background-color: rgb(156, 205, 221)
+    }
+  }
+
+  .btns {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+
+    &:first-child button:first-child{
+      background-color: transparent;
+      color: tomato;
+      border: 1px solid tomato;
+    }
+  }
+
+  .playerName {
+    font-size: 20px;
+  }
+}
+
+
+.container{
+  width: 400px;
+  height: 350px;
   display: grid;
+  padding: 15px;
+  border-radius: 10px;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
+  background-color: rgb(2, 2, 34);
 
   .boxItem {
     border: none;
-    cursor: pointer;
     color: white;
     font-size: 80px;
     font-weight: bold;
-
+    cursor: pointer;
+    background-color: transparent;
+    
     &:nth-child(1), 
     &:nth-child(2), 
     &:nth-child(4), 
@@ -45,20 +116,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 30px;
+  gap: 15px;
+
+  .playerWinner {
+    font-size: 30px;
+    font-weight: bold;
+  }
 
   .winner {
-    font-size: 50px;
-    font-weight: bold;
-  }
-
-  .inforWinner {
-    font-size: 35px;
-    font-weight: bold;
-  }
-
-  .winnerLabel {
-    color: lightblue;
     font-size: 40px;
     font-weight: bold;
   }
@@ -71,6 +136,8 @@
     font-size: 15px;
     color: rgb(1, 1, 26);
     cursor: pointer;
+    font-weight: bold;
+    margin-top: 30px;
   }
   
 }
