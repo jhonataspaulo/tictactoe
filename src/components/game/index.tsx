@@ -8,7 +8,7 @@ interface LocationStateProps {
 }
 
 function Game() {
-  const [current, setCurrent] = useState('x');
+  const [current, setCurrent] = useState('');
   const [matriz, setMatriz] = useState<any[] | null>(null);
   const [winner, setWinner] = useState<string | null>(null);
   const [pl1, setPl1] = useState<string | null>(null);
@@ -82,7 +82,9 @@ function Game() {
       setMatriz([newMatriz]);
     }
     doc.disabled = true;
-    current == 'x' ? (doc.style.color = 'green') : (doc.style.color = 'tomato');
+    current == 'x'
+      ? (doc.style.color = 'lightgreen')
+      : (doc.style.color = 'tomato');
     current == 'x' ? setCurrent('o') : setCurrent('x');
   }
 
@@ -98,6 +100,27 @@ function Game() {
       newPlacar.p2 = newPlacar.p2 + 1;
       setPlacar(newPlacar);
     }
+  }
+
+  function animateButton(button: HTMLButtonElement) {
+    button.animate([{color: 'lightseagreen'}, {color: 'yellow'}], {
+      duration: 200,
+      iterations: 5
+    });
+  }
+
+  function disableButtons() {
+    arr.map(id => {
+      const doc = document.getElementById(String(id)) as HTMLButtonElement;
+      doc.disabled = true;
+    });
+  }
+
+  function enableButtons() {
+    arr.map(id => {
+      const doc = document.getElementById(String(id)) as HTMLButtonElement;
+      doc.disabled = false;
+    });
   }
 
   useEffect(() => {
@@ -145,12 +168,21 @@ function Game() {
         let matcho = oid?.filter(x => arr.includes(x));
         if (matchx?.length == 3) {
           incPlacar(1);
-          setTimeout(() => setWinner(pl1), 250);
+          lines[i].map((id: string) => {
+            const doc = document.getElementById(id) as HTMLButtonElement;
+            animateButton(doc);
+          });
+          setTimeout(() => setWinner(pl1), 1500);
           return;
         }
         if (matcho?.length == 3) {
           incPlacar(2);
-          setTimeout(() => setWinner(pl2), 250);
+          lines[i].map((id: string) => {
+            const doc = document.getElementById(id) as HTMLButtonElement;
+            animateButton(doc);
+          });
+          disableButtons();
+          setTimeout(() => setWinner(pl2), 1500);
           return;
         }
       }
@@ -159,12 +191,22 @@ function Game() {
         let matcho = oid?.filter(x => arr.includes(x));
         if (matchx?.length == 3) {
           incPlacar(1);
-          setTimeout(() => setWinner(pl1), 250);
+          columns[i].map((id: string) => {
+            const doc = document.getElementById(id) as HTMLButtonElement;
+            animateButton(doc);
+          });
+          disableButtons();
+          setTimeout(() => setWinner(pl1), 1500);
           return;
         }
         if (matcho?.length == 3) {
           incPlacar(2);
-          setTimeout(() => setWinner(pl2), 250);
+          columns[i].map((id: string) => {
+            const doc = document.getElementById(id) as HTMLButtonElement;
+            animateButton(doc);
+          });
+          disableButtons();
+          setTimeout(() => setWinner(pl2), 1500);
           return;
         }
       }
@@ -176,12 +218,22 @@ function Game() {
         let matcho = oid?.filter(x => arr.includes(x));
         if (matchx?.length == 3) {
           incPlacar(1);
-          setTimeout(() => setWinner(pl1), 250);
+          diagonals[i].map((id: string) => {
+            const doc = document.getElementById(id) as HTMLButtonElement;
+            animateButton(doc);
+          });
+          disableButtons();
+          setTimeout(() => setWinner(pl1), 1500);
           return;
         }
         if (matcho?.length == 3) {
           incPlacar(2);
-          setTimeout(() => setWinner(pl2), 250);
+          diagonals[i].map((id: string) => {
+            const doc = document.getElementById(id) as HTMLButtonElement;
+            animateButton(doc);
+          });
+          disableButtons();
+          setTimeout(() => setWinner(pl2), 1500);
           return;
         }
       }
@@ -202,22 +254,34 @@ function Game() {
           let matcho = oid?.filter(x => arr.includes(x));
           if (matchx?.length == 3) {
             w = pl1!;
-            setTimeout(() => setWinner(pl1), 250);
+            diagonals[i].map((id: string) => {
+              const doc = document.getElementById(id) as HTMLButtonElement;
+              animateButton(doc);
+            });
+            disableButtons();
+            setTimeout(() => setWinner(pl1), 1500);
             incPlacar(1);
             return;
           }
           if (matcho?.length == 3) {
             w = pl2!;
-            setTimeout(() => setWinner(pl2), 250);
+            diagonals[i].map((id: string) => {
+              const doc = document.getElementById(id) as HTMLButtonElement;
+              animateButton(doc);
+            });
+            disableButtons();
+            setTimeout(() => setWinner(pl2), 1500);
             incPlacar(2);
             return;
           }
         }
       }
       if (w == '') {
+        disableButtons();
         setTimeout(() => setWinner('EMPATE'), 250);
         return;
       } else {
+        disableButtons();
         setTimeout(() => setWinner(w), 250);
         w === pl1 ? incPlacar(1) : incPlacar(2);
         return;
@@ -225,10 +289,16 @@ function Game() {
     }
   }, [current]);
 
+  useEffect(() => {
+    const options = ['x', 'o'];
+    setCurrent(options.sort()[0]);
+    console.log(current);
+  }, []);
+
   function reset() {
     setWinner(null);
     setMatriz(null);
-    setCurrent('x');
+    enableButtons();
   }
 
   return (
@@ -255,7 +325,14 @@ function Game() {
               <span>
                 Jogador 1: <span style={{color: 'green'}}>X</span>
               </span>
-              <span className={styles.playerName}>{pl1}</span>
+              <span
+                className={styles.playerName}
+                style={{
+                  color: `${current === 'x' ? 'yellow' : ''}`
+                }}
+              >
+                {pl1}
+              </span>
               <p>{placar.p1}</p>
             </div>
             <div>
@@ -278,7 +355,12 @@ function Game() {
               <span>
                 Jogador 2: <span style={{color: 'tomato'}}>O</span>
               </span>
-              <span className={styles.playerName}>{pl2}</span>
+              <span
+                className={styles.playerName}
+                style={{color: `${current === 'o' ? 'yellow' : ''}`}}
+              >
+                {pl2}
+              </span>
               <p>{placar.p2}</p>
             </div>
           </div>
