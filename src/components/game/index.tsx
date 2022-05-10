@@ -240,7 +240,7 @@ function Game() {
           ) : (
             <>
               <p className={styles.playerWinner}>🎉 {winner} 🎉</p>
-              <span className={styles.winner}>WINNER</span>
+              <span className={styles.winner}>VENCEU</span>
             </>
           )}
 
