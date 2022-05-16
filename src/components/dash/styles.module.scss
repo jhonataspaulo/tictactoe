@@ -1,0 +1,207 @@
+.profileBar {
+  width: 100%;
+  height: 80px;
+  background-color: #111;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  border-top: 1px solid #2B36E5;
+  display: flex;
+  align-items: center;
+  justify-content:space-around;
+  padding: 20px 0;
+
+  .button {
+    width: 70px;
+    height: 70px;
+    background-color: #2B36E5;
+    color: white;
+    font-weight: bold;
+    font-size: 30px;
+    border-radius: 50%;
+    margin-top: -80px;
+    border: 2px solid white;
+
+    &:hover{
+      background-color:  #212aa0;
+    }
+  }
+
+  .exit {
+    background-color: tomato;
+    padding: 15px 20px;
+    color: white;
+    font-weight: bold;
+    font-size: 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: -20px;
+
+    &:hover{
+      background-color:  rgb(224, 78, 52);
+    }
+  }
+
+  span {
+    color: lightblue;
+    font-weight: bold;
+  }
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: -80px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  margin-top: -80px;
+  gap: 20px;
+
+  .inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    & input {
+      border: 1px solid lightblue;
+      border-radius: 4px;
+      padding: 17px 25px;
+      font-size: 17px;
+      color: white;
+      font-size: 15px;
+      background-color: rgba($color: #000000, $alpha: .5);
+    }
+  }
+}
+
+@media (max-width: 640px) {
+  .form {
+    width: 100vw;
+    padding: 0 20px
+  }
+}
+
+.formNewGameButtons {
+  display: flex;
+
+  button {
+    background-color: #2B36E5;
+    padding: 15px 20px;
+    color: white;
+    font-weight: bold;
+    font-size: 15px;
+    border-radius: 4px;
+
+    &:first-child {
+      margin-right: 10px;
+    }
+
+    &:last-child {
+      flex: 1
+    }
+  
+    &:hover{
+      background-color:  #212aa0;
+    }
+  }
+}
+
+.containerHistoryGames {
+  width: 100%;
+  height: calc(100vh - 80px);
+  margin-bottom: 20px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0 10px 80px;
+
+  & {
+    scrollbar-width: auto;
+    scrollbar-color: #212aa0 #212aa0;
+  }
+
+  /* Chrome, Edge, and Safari */
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #111;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #212aa0;
+    border-radius: 10px;
+    border: 3px solid #212aa0;
+  }
+}
+
+@media (max-width: 640px) {
+    .containerHistoryGames {
+      width: 100vw;
+    }
+}
+
+.cardHistoryGames {
+  background-color: #111;
+  padding: 20px 0;
+  border-radius: 4px;
+  display: flex;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #212aa0;
+  border-radius: 4px;
+
+  .gameCard {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;    
+    padding: 10px 0;
+    .user, .score {
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 0;
+    }
+    .user {
+      min-width: 120px;
+    }
+  }
+
+  .actions {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    .resumeGame {
+      background-color: #212aa0;
+      padding: 12px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+
+    .deleteGame {
+      background-color: tomato;
+      padding: 12px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: white;
+      cursor: pointer;
+    }
+  }
+
+}
+

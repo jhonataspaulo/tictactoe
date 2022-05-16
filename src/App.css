@@ -2,7 +2,6 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  background-color: rgb(1, 1, 26);
 }
 
 body {
@@ -13,13 +12,10 @@ body {
   color: white;
   font-family: system-ui;
   overflow: hidden;
+  background: url('./assets/fundo.svg'), #121212;
+  background-position: center;
 }
 
-a {
-  text-decoration: none;
-  color: lightblue;
-}
-
-a:visited {
-  color: lightblue;
+button {
+  border: none;
 }

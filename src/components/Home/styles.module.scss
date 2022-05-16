@@ -1,62 +1,75 @@
-.container {
+main {
+  width: 300px;
+}
+
+.header {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 15px;
+  justify-content: center;
+  gap: 20px;
 
-  button {
-    width: 100%;
-    padding: 20px 20px;
-    border: none;
-    background-color: rgb(21, 21, 216);
-    color: white;
-    font-size: 16px;
-    border-radius: 4px;
-    cursor: pointer;
-
-    &:hover {
-      background-color: rgb(44, 44, 228);
-    }
+  img {
+    width: 35px;
+    height: 35px;
   }
 
-  .title {
+  span {
+    font-size: 30px;
     font-weight: bold;
   }
+}
 
-  .footer {
-    font-size: 15px;
-    a {
-      text-decoration-line: underline;
-      text-underline-offset: 2px;
-    }  
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 40px 0;
+
+  input {
+    border: 1px solid lightblue;
+    padding: 17px 25px;
+    font-size: 17px;
+    border-radius: 4px;
+    color: white;
+    background-color: rgba($color: #000000, $alpha: .5);
   }
-  
-  .inputs {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin: 15px 0;
+
+  input:focus {
+    outline: 1px solid lightblue;
   }
 
-  .inputGroup {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    input {
-    width: 100%;
-      padding: 14px 15px;
-      border: 1px solid rgb(77, 77, 248);
-      border-radius: 4px;
-      color: white;
-
-      &::placeholder {
-        color: rgb(77, 77, 248);
-      }
-    }
+  input::placeholder{
+    color: rgba(255,255,255, .5);
   }
 }
 
 
+.button {
+  width: 100%;
+  background-color: #2B36E5;
+  padding: 15px 20px;
+  color: white;
+  font-weight: bold;
+  font-size: 15px;
+  border-radius: 4px;
 
+  &:hover{
+    background-color:  #212aa0;
+  }
+}
+
+footer {
+  margin-top: 30px; 
+  text-align: center;
+  & a {
+    color: lightblue;
+    text-underline-offset: 3px;
+  }
+}
+
+@media (max-width: 640px) {
+  main {
+    width: 100vw;
+    padding: 0 20px
+  }
+}

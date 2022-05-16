@@ -1,57 +1,59 @@
-import {useState} from 'react';
-import styles from './styles.module.scss';
+import {useEffect, useRef} from 'react';
 import {useNavigate} from 'react-router-dom';
+import Logo from '../../assets/logo.png';
+import styles from './styles.module.scss';
 
 export function Home() {
-  const [player1, setPlayer1] = useState<string>('');
-  const [player2, setPlayer2] = useState<string>('');
-  let navigate = useNavigate();
-  function handleNext() {
-    const p1 = document.getElementById('player1');
-    const p2 = document.getElementById('player2');
-
-    if (player1 === '') {
-      p1?.focus();
+  const username = useRef<HTMLInputElement | null>(null);
+  const navigate = useNavigate();
+  function login() {
+    if (username.current?.value.length === 0) {
+      username.current.focus();
       return;
     }
 
-    if (player2 === '') {
-      p2?.focus();
-      return;
-    }
-    navigate('/game', {state: {player1, player2}});
+    localStorage.setItem(
+      'user#tictactoe',
+      JSON.stringify(username.current?.value.toLowerCase())
+    );
+    navigate('/dash');
   }
 
+  useEffect(() => {
+    const getuser = localStorage.getItem('user#tictactoe');
+    if (getuser) {
+      navigate('/dash');
+    }
+  }, []);
+
+  const enter = (e: any) => {
+    if (e.key === 'Enter') {
+      login();
+    }
+  };
+
   return (
-    <div className={styles.container}>
-      <h1 className={styles.title}>#️ TIC TAC TOE #️</h1>
-      <div className={styles.inputs}>
-        <div className={styles.inputGroup}>
-          <input
-            type="text"
-            id="player1"
-            placeholder="Nome do jogador 1"
-            value={player1}
-            onChange={e => setPlayer1(e.target.value)}
-          />
-        </div>
-        <div className={styles.inputGroup}>
-          <input
-            type="text"
-            id="player2"
-            placeholder="Nome do jogador 2"
-            value={player2}
-            onChange={e => setPlayer2(e.target.value)}
-          />
-        </div>
-        <button onClick={handleNext}>Continuar</button>
+    <main>
+      <header className={styles.header}>
+        <img src={Logo} alt="Simbolo de hashtag, logo do jogo tic tac toe" />
+        <span>Tic Tac Toe</span>
+      </header>
+      <div className={styles.content}>
+        <input
+          autoFocus
+          type="text"
+          placeholder="username"
+          ref={username}
+          onKeyPress={(e: any) => enter(e)}
+        />
       </div>
-      <footer className={styles.footer}>
+      <button className={styles.button} onClick={() => login()}>
+        Entrar
+      </button>
+      <footer>
         Feito com 🤍 por{' '}
-        <a href="https://github.com/jhonataspaulo" target="_blank">
-          Jhonatas Paulo
-        </a>
+        <a href="https://github.com/jhonataspaulo">Jhonatas Paulo</a>
       </footer>
-    </div>
+    </main>
   );
 }

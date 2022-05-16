@@ -1,143 +1,119 @@
-.header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 450px;
-  
-  .players {
-    margin: 20px 0;
-    display: flex;
-    align-items: center;
-    gap: 40px;
-
-  }
-
-  .player {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    &:first-child span:first-child,
-    &:last-child span:first-child
-    {
-      font-size: 12px;
-      color: lightblue;
-      margin-bottom: 5px;
-    }
-
-    p {
-      font-size: 40px;
-      font-weight: bold;
-    }
-  }
-
-  .btnReset {
-    border: none;
-    background-color: lightblue;
-    padding: 10px 20px;
-    font-size: 15px;
-    font-weight: bold;
-    border-radius: 5px;
-    cursor: pointer;
-    color: rgb(13, 34, 41);
-
-    &:hover{
-      background-color: rgb(156, 205, 221)
-    }
-  }
-
-  .btns {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-
-    &:first-child button:first-child{
-      background-color: transparent;
-      color: tomato;
-      border: 1px solid tomato;
-    }
-  }
-
-  .playerName {
-    font-size: 20px;
-  }
-}
-
-
-.container{
-  width: 400px;
-  height: 350px;
+.container {
+  min-width: 400px;
+  min-height: 400px;
   display: grid;
-  padding: 15px;
-  border-radius: 10px;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
-  background-color: rgb(2, 2, 34);
+  gap: 5px;
+  background-color: #121212;
+  padding: 10px;
+  border-radius: 5px;
 
-  .boxItem {
-    border: none;
+  .board {
+    background-color: #1E1E1E;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: white;
-    font-size: 80px;
-    font-weight: bold;
-    cursor: pointer;
-    background-color: transparent;
-    
-    &:nth-child(1), 
-    &:nth-child(2), 
-    &:nth-child(4), 
-    &:nth-child(5), 
-    &:nth-child(7), 
-    &:nth-child(8) {
-      border-right: 2px solid lightseagreen;
-    }
-
-    &:nth-child(1),  
-    &:nth-child(2),  
-    &:nth-child(3),  
-    &:nth-child(4),  
-    &:nth-child(5),  
-    &:nth-child(6){
-      border-bottom: 2px solid lightseagreen;
-    } 
-    -webkit-tap-highlight-color: transparent;
-  }
-}
-
-@media (max-width: 450px) {
-  .container {
-    width: calc(100vw - 40px);
-    height: 350px
-  }
-}
-
-.containerWinner{
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 15px;
-
-  .playerWinner {
-    font-size: 30px;
-    font-weight: bold;
-  }
-
-  .winner {
     font-size: 40px;
-    font-weight: bold;
-  }
-
-  .button {
-    padding: 15px 25px;
-    border: none;
-    background-color: lightblue;
-    border-radius: 20px;
-    font-size: 15px;
-    color: rgb(1, 1, 26);
     cursor: pointer;
-    font-weight: bold;
-    margin-top: 30px;
+    font-weight: bold
   }
   
 }
+
+.actions {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+
+  & button {
+    padding: 15px 20px;
+    margin-right: 10px;
+    background-color: #2B36E5;
+    border: none;
+    border-radius: 3px;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all .2s ease-in-out;
+    width: 150px;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+
+    &:last-child {
+      background-color: rgba($color: #000000, $alpha: .3);
+      border: 1px solid lightcoral;
+      color: lightcoral;
+    }
+  }
+}
+
+.boxScore {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+
+  .player {
+    min-width: 100px;
+    background-color: lightgray;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #3b3b3b;
+    font-weight: bold;
+
+    &:first-child {
+      border-top-left-radius: 4px;
+      border-bottom-left-radius: 4px;
+    }
+
+    &:last-child {
+      border-top-right-radius: 4px;
+      border-bottom-right-radius: 4px;
+    }
+  }
+
+  .score {
+    background-color: lightgray;
+    padding: 15px 20px;
+    background-color: #2B36E5;
+    font-weight: bold;
+
+    &:first-child {
+      border-top-left-radius: 4px;
+      border-bottom-left-radius: 4px;
+      background-color: green;
+      padding: 10px 10px;
+
+    }
+
+    &:nth-child(3) {
+      border-top-left-radius: 4px;
+      border-bottom-left-radius: 4px;
+      font-size: 17px;
+    }
+
+
+    &:nth-child(4) {
+      border-top-right-radius: 4px;
+      border-bottom-right-radius: 4px;
+      font-size: 17px;
+    }
+
+    &:last-child {
+      border-top-right-radius: 4px;
+      border-bottom-right-radius: 4px;
+      background-color: tomato;
+      padding: 10px 10px;
+    }
+  }
+}
+

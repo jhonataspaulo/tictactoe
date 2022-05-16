@@ -1,381 +1,196 @@
-import {useEffect, useState} from 'react';
-import {useLocation, useNavigate} from 'react-router-dom';
+import {useEffect, useRef, useState} from 'react';
+import {useNavigate} from 'react-router-dom';
 import styles from './styles.module.scss';
 
-interface LocationStateProps {
-  player1: string;
-  player2: string;
+interface GameLocal {
+  opponent: string;
+  scoreOpponent: number;
+  scoreUser: number;
+  user: string;
 }
 
 function Game() {
-  const [current, setCurrent] = useState('');
-  const [matriz, setMatriz] = useState<any[] | null>(null);
-  const [winner, setWinner] = useState<string | null>(null);
-  const [pl1, setPl1] = useState<string | null>(null);
-  const [pl2, setPl2] = useState<string | null>(null);
-  const [placar, setPlacar] = useState({
-    p1: 0,
-    p2: 0
-  });
+  const [board, setBoard] = useState(['', '', '', '', '', '', '', '', '']);
+  const [symbol, setSymbol] = useState('X');
+  const [winner, setWinner] = useState('');
+  const [draw, setDraw] = useState(false);
+  const [player1, setPlayer1] = useState<string>('');
+  const [player2, setPlayer2] = useState<string>('');
+  const [scoreP1, setScoreP1] = useState<number>(0);
+  const [scoreP2, setScoreP2] = useState<number>(0);
   const navigate = useNavigate();
-
-  const location = useLocation();
-  const myState: LocationStateProps = location.state as LocationStateProps;
-
-  const arr = [11, 12, 13, 21, 22, 23, 31, 32, 33];
-
-  function resetAll() {
-    arr.map(id => {
-      let doc = document.getElementById(String(id)) as HTMLButtonElement;
-      doc.textContent = '';
-      doc.disabled = false;
-    });
-
-    setWinner(null);
-    setCurrent('x');
-    setMatriz(null);
-
-    let newPlacar = {
-      p1: 0,
-      p2: 0
-    };
-    setPlacar(newPlacar);
-  }
-
-  function resetPlacar() {
-    let newPlacar = {
-      p1: 0,
-      p2: 0
-    };
-    setPlacar(newPlacar);
-  }
-
-  function logout() {
-    arr.map(id => {
-      let doc = document.getElementById(String(id)) as HTMLButtonElement;
-      doc.textContent = '';
-      doc.disabled = false;
-    });
-
-    setWinner(null);
-    setCurrent('x');
-    setMatriz(null);
-
-    let newPlacar = {
-      p1: 0,
-      p2: 0
-    };
-    setPlacar(newPlacar);
-    setPl1(null);
-    setPl2(null);
-    location.state = null;
-  }
-
-  function play(id: string) {
-    const doc = document.getElementById(id) as HTMLButtonElement;
-
-    doc.innerText = current;
-    let newMatriz = {id: id, value: doc.textContent};
-    if (matriz) {
-      setMatriz([...matriz, newMatriz]);
-    } else {
-      setMatriz([newMatriz]);
-    }
-    doc.disabled = true;
-    current == 'x'
-      ? (doc.style.color = 'lightgreen')
-      : (doc.style.color = 'tomato');
-    current == 'x' ? setCurrent('o') : setCurrent('x');
-  }
-
-  function incPlacar(player: number) {
-    if (player == 1) {
-      let newPlacar = placar;
-      newPlacar.p1 = newPlacar.p1 + 1;
-      setPlacar(newPlacar);
-    }
-
-    if (player == 2) {
-      let newPlacar = placar;
-      newPlacar.p2 = newPlacar.p2 + 1;
-      setPlacar(newPlacar);
-    }
-  }
-
-  function animateButton(button: HTMLButtonElement) {
-    button.animate([{color: 'lightseagreen'}, {color: 'yellow'}], {
-      duration: 200,
-      iterations: 5
-    });
-  }
-
-  function disableButtons() {
-    arr.map(id => {
-      const doc = document.getElementById(String(id)) as HTMLButtonElement;
-      doc.disabled = true;
-    });
-  }
-
-  function enableButtons() {
-    arr.map(id => {
-      const doc = document.getElementById(String(id)) as HTMLButtonElement;
-      doc.disabled = false;
-    });
-  }
+  const divRef = useRef<HTMLDivElement[]>([]);
+  const winnersScenaries = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6]
+  ];
 
   useEffect(() => {
-    if (myState == null) {
+    const getUser = localStorage.getItem('user#tictactoe');
+    const getGame = localStorage.getItem('game#tictactoe');
+    if (!getUser) {
       navigate('/');
-    } else {
-      setPl1(myState.player1);
-      setPl2(myState.player2);
-      console.log(myState);
-    }
-  }, [myState]);
-
-  useEffect(() => {
-    const lines = [
-      ['11', '12', '13'],
-      ['21', '22', '23'],
-      ['31', '32', '33']
-    ];
-
-    const columns = [
-      ['11', '21', '31'],
-      ['12', '22', '32'],
-      ['13', '23', '33']
-    ];
-
-    const diagonals = [
-      ['11', '22', '33'],
-      ['13', '22', '31']
-    ];
-
-    const x = matriz?.filter(ele => ele.value == 'x');
-    const o = matriz?.filter(ele => ele.value == 'o');
-
-    const xid = x?.map(item => {
-      return item.id;
-    });
-
-    const oid = o?.map(item => {
-      return item.id;
-    });
-
-    for (let i = 0; i < 3; i++) {
-      for (let arr of [lines[i]]) {
-        let matchx = xid?.filter(x => arr.includes(x));
-        let matcho = oid?.filter(x => arr.includes(x));
-        if (matchx?.length == 3) {
-          incPlacar(1);
-          lines[i].map((id: string) => {
-            const doc = document.getElementById(id) as HTMLButtonElement;
-            animateButton(doc);
-          });
-          setTimeout(() => setWinner(pl1), 1500);
-          return;
-        }
-        if (matcho?.length == 3) {
-          incPlacar(2);
-          lines[i].map((id: string) => {
-            const doc = document.getElementById(id) as HTMLButtonElement;
-            animateButton(doc);
-          });
-          disableButtons();
-          setTimeout(() => setWinner(pl2), 1500);
-          return;
-        }
-      }
-      for (let arr of [columns[i]]) {
-        let matchx = xid?.filter(x => arr.includes(x));
-        let matcho = oid?.filter(x => arr.includes(x));
-        if (matchx?.length == 3) {
-          incPlacar(1);
-          columns[i].map((id: string) => {
-            const doc = document.getElementById(id) as HTMLButtonElement;
-            animateButton(doc);
-          });
-          disableButtons();
-          setTimeout(() => setWinner(pl1), 1500);
-          return;
-        }
-        if (matcho?.length == 3) {
-          incPlacar(2);
-          columns[i].map((id: string) => {
-            const doc = document.getElementById(id) as HTMLButtonElement;
-            animateButton(doc);
-          });
-          disableButtons();
-          setTimeout(() => setWinner(pl2), 1500);
-          return;
-        }
-      }
+      return;
     }
 
-    for (let i = 0; i < 2; i++) {
-      for (let arr of [diagonals[i]]) {
-        let matchx = xid?.filter(x => arr.includes(x));
-        let matcho = oid?.filter(x => arr.includes(x));
-        if (matchx?.length == 3) {
-          incPlacar(1);
-          diagonals[i].map((id: string) => {
-            const doc = document.getElementById(id) as HTMLButtonElement;
-            animateButton(doc);
-          });
-          disableButtons();
-          setTimeout(() => setWinner(pl1), 1500);
-          return;
-        }
-        if (matcho?.length == 3) {
-          incPlacar(2);
-          diagonals[i].map((id: string) => {
-            const doc = document.getElementById(id) as HTMLButtonElement;
-            animateButton(doc);
-          });
-          disableButtons();
-          setTimeout(() => setWinner(pl2), 1500);
-          return;
-        }
-      }
+    if (!getGame) {
+      navigate('/dash');
+      return;
     }
-    let arrDocs: any = [];
-    arr.map(id => {
-      let doc = document.getElementById(String(id)) as HTMLButtonElement;
-      if (doc.textContent == '') {
-        arrDocs.push(doc);
-      }
-    });
 
-    if (arrDocs.length == 0) {
-      let w = '';
-      for (let i = 0; i < 2; i++) {
-        for (let arr of [diagonals[i]]) {
-          let matchx = xid?.filter(x => arr.includes(x));
-          let matcho = oid?.filter(x => arr.includes(x));
-          if (matchx?.length == 3) {
-            w = pl1!;
-            diagonals[i].map((id: string) => {
-              const doc = document.getElementById(id) as HTMLButtonElement;
-              animateButton(doc);
-            });
-            disableButtons();
-            setTimeout(() => setWinner(pl1), 1500);
-            incPlacar(1);
-            return;
-          }
-          if (matcho?.length == 3) {
-            w = pl2!;
-            diagonals[i].map((id: string) => {
-              const doc = document.getElementById(id) as HTMLButtonElement;
-              animateButton(doc);
-            });
-            disableButtons();
-            setTimeout(() => setWinner(pl2), 1500);
-            incPlacar(2);
-            return;
-          }
-        }
-      }
-      if (w == '') {
-        disableButtons();
-        setTimeout(() => setWinner('EMPATE'), 250);
-        return;
-      } else {
-        disableButtons();
-        setTimeout(() => setWinner(w), 250);
-        w === pl1 ? incPlacar(1) : incPlacar(2);
-        return;
-      }
-    }
-  }, [current]);
-
-  useEffect(() => {
-    const options = ['x', 'o'];
-    setCurrent(options.sort()[0]);
-    console.log(current);
+    const getGameParse: GameLocal = JSON.parse(getGame);
+    setPlayer1(getGameParse.user);
+    setPlayer2(getGameParse.opponent);
+    setScoreP1(getGameParse.scoreUser);
+    setScoreP2(getGameParse.scoreOpponent);
   }, []);
 
-  function reset() {
-    setWinner(null);
-    setMatriz(null);
-    enableButtons();
+  useEffect(() => {
+    if (scoreP1 > 0 || scoreP2 > 0) {
+      const currentGame: GameLocal = {
+        user: player1,
+        opponent: player2,
+        scoreUser: scoreP1,
+        scoreOpponent: scoreP2
+      };
+
+      localStorage.setItem('game#tictactoe', JSON.stringify(currentGame));
+
+      const gamesSaved = localStorage.getItem(`games#${player1}`) as string;
+
+      if (gamesSaved) {
+        let gamesParse: GameLocal[] = JSON.parse(gamesSaved);
+        const idx = gamesParse.findIndex(
+          (game: GameLocal) =>
+            game.user === player1 && game.opponent === player2
+        );
+
+        if (idx >= 0) {
+          gamesParse[idx] = {
+            ...currentGame
+          };
+
+          localStorage.setItem(`games#${player1}`, JSON.stringify(gamesParse));
+        }
+      }
+    }
+  }, [scoreP1, scoreP2]);
+
+  const setPlay = (idx: number) => {
+    if (winner || draw) return;
+    if (!!board[idx]) return;
+    poupalteBoard(idx);
+    if (checkWinner()) {
+      setWinner(symbol);
+      if (symbol === 'X') {
+        setScoreP1(scoreP1 + 1);
+      } else {
+        setScoreP2(scoreP2 + 1);
+      }
+      return;
+    }
+    if (board.filter(e => e).length === 9) {
+      setDraw(true);
+      setTimeout(() => {
+        restartBoard()
+      }, 500);
+    }
+  };
+
+  const poupalteBoard = (idx: number) => {
+    let cpBoard = board;
+    cpBoard[idx] = symbol;
+    cpBoard = [...cpBoard];
+    setBoard(cpBoard);
+    setSymbol(symbol === 'X' ? 'O' : 'X');
+  };
+
+  const paintWinner = (ids: number[]) => {
+    ids.map(id => {
+      divRef.current[id].animate(
+        [
+          {color: 'white', border: 'none'},
+          {color: 'lightgreen', border: '1px solid lightgreen'}
+        ],
+        {
+          duration: 200,
+          iterations: 3
+        }
+      );
+    });
+    setTimeout(() => {
+      restartBoard();
+    }, 1000);
+  };
+
+  const checkWinner = () => {
+    for (let i in winnersScenaries) {
+      if (
+        board[winnersScenaries[i][0]] === symbol &&
+        board[winnersScenaries[i][1]] === symbol &&
+        board[winnersScenaries[i][2]] === symbol
+      ) {
+        paintWinner(winnersScenaries[i]);
+        return i;
+      }
+    }
+  };
+
+  function restartBoard() {
+    let boardReset = board;
+    boardReset.fill('');
+    setBoard([...boardReset]);
+    setWinner('');
+    setDraw(false);
   }
+
+  const logout = () => {
+    localStorage.removeItem('game#tictactoe');
+    navigate('/dash');
+  };
 
   return (
     <>
-      {winner ? (
-        <div className={styles.containerWinner}>
-          {winner == 'EMPATE' ? (
-            <span className={styles.winner}>🥲 {winner} 🥲 </span>
-          ) : (
-            <>
-              <p className={styles.playerWinner}>🎉 {winner} 🎉</p>
-              <span className={styles.winner}>VENCEU</span>
-            </>
-          )}
-
-          <button className={styles.button} onClick={reset}>
-            Jogar novamente
-          </button>
+      <div className={styles.boxScore}>
+        <div className={styles.score}>X</div>
+        <div
+          className={styles.player}
+          style={{color: `${symbol === 'X' ? '#2B36E5' : ''}`}}
+        >
+          {player1}
         </div>
-      ) : (
-        <div className={styles.header}>
-          <div className={styles.players}>
-            <div className={styles.player}>
-              <span>
-                Jogador 1: <span style={{color: 'green'}}>X</span>
-              </span>
-              <span
-                className={styles.playerName}
-                style={{
-                  color: `${current === 'x' ? 'yellow' : ''}`
-                }}
-              >
-                {pl1}
-              </span>
-              <p>{placar.p1}</p>
-            </div>
-            <div>
-              <div className={styles.btns}>
-                <button className={styles.btnReset} onClick={resetAll}>
-                  Reiniciar
-                </button>
-                <button className={styles.btnReset} onClick={resetPlacar}>
-                  Zerar Placar
-                </button>
-                <span
-                  style={{marginTop: '5px', cursor: 'pointer'}}
-                  onClick={logout}
-                >
-                  Sair
-                </span>
-              </div>
-            </div>
-            <div className={styles.player}>
-              <span>
-                Jogador 2: <span style={{color: 'tomato'}}>O</span>
-              </span>
-              <span
-                className={styles.playerName}
-                style={{color: `${current === 'o' ? 'yellow' : ''}`}}
-              >
-                {pl2}
-              </span>
-              <p>{placar.p2}</p>
-            </div>
-          </div>
-          <div className={styles.container}>
-            {arr.map((id: number) => (
-              <button
-                key={id}
-                id={String(id)}
-                className={styles.boxItem}
-                onClick={() => play(String(id))}
-              ></button>
-            ))}
-          </div>
+        <div className={styles.score}>{scoreP1}</div>
+        <div className={styles.score}>{scoreP2}</div>
+        <div
+          className={styles.player}
+          style={{color: `${symbol === 'O' ? '#2B36E5' : ''}`}}
+        >
+          {player2}
         </div>
-      )}
+        <div className={styles.score}>O</div>
+      </div>
+      <div className={styles.container}>
+        {board.map((item: string, index: number) => (
+          <div
+            key={index}
+            ref={element => divRef.current.push(element as HTMLDivElement)}
+            onClick={() => setPlay(index)}
+            className={styles.board}
+          >
+            {item}
+          </div>
+        ))}
+      </div>
+      <div className={styles.actions}>
+        <button onClick={() => restartBoard()}>Restart</button>
+        <button onClick={() => logout()}>Voltar</button>
+      </div>
     </>
   );
 }
